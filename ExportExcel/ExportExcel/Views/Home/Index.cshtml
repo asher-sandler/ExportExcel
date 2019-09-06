@@ -1,0 +1,179 @@
+﻿@model IEnumerable<ExportExcel.Models.ProjectsViewModel>
+ 
+
+<div class="container" style="direction:rtl">
+    <p>בס"ד</p>
+
+
+    @if (Model != null)
+    {
+        //project id
+        // employee list
+        IEnumerable<ExportExcel.Models.ProjectsViewModel> emList = Model.Select(x => new ExportExcel.Models.ProjectsViewModel
+                           {
+                               EMPLOYEE_NAME = x.EMPLOYEE_NAME
+                           });
+
+        if (emList.Count() > 0)
+        {
+
+            emList = emList.GroupBy(x => x.EMPLOYEE_NAME)
+                                      .Select(g => g.First()).OrderBy(c => c.EMPLOYEE_NAME);
+            double sumGrandTotal = 0;
+            double hoursGrandTotal = 0;
+            // DateTime firstSunday = new DateTime(1753, 1, 7);
+
+            /*
+            DistinctBGroupBy(i=> i.EMPLOYEE_NAME).Select(x=> new
+            ExportExcel.Models.ProjectsViewModel
+            {
+                EMPLOYEE_NAME = x.EMPLOYEE_NAME
+            }).Distinct();
+    */
+
+            foreach (var empItem in emList)
+            {
+                double sumTotal = 0;
+                double hoursTotal = 0;
+
+                IEnumerable<ExportExcel.Models.ProjectsViewModel> emData = Model.Select(x => new ExportExcel.Models.ProjectsViewModel
+                {
+                    PROJECT_ID = x.PROJECT_ID,
+                    EMPLOYEE_NAME = x.EMPLOYEE_NAME,
+                    WORK_DATE = x.WORK_DATE,
+                    CLIENT_NAME = x.CLIENT_NAME,
+                    WORK_DESCRIPTION = x.WORK_DESCRIPTION,
+                    WORK_HOURS = x.WORK_HOURS,
+                    HOUR_COST = x.HOUR_COST
+
+                }).Where(row => row.EMPLOYEE_NAME == empItem.EMPLOYEE_NAME);
+
+
+
+            <div class="row asher-header" style="direction:rtl">
+                <div class="col-md-3">BYON-IT.COM</div>
+                <div class="col-md-1">@DateTime.Now.ToString("HH:mm")</div>
+                <div class="col-md-2">@DateTime.Now.ToString("dd.MM.yyyy")</div>
+
+                <div class="col-md-1">תאריך :</div>
+
+                <div class="col-md-3">דוח שעות לפי עובדים</div>
+            </div>
+
+
+
+            <div>
+                <span><p class="text-center text-primary"><h1><b>@empItem.EMPLOYEE_NAME</b></h1></p></span>
+            </div>
+            <table class="table table-responsive asher-table">
+                <thead>
+                    <tr >
+
+                        <th>תאריך</th>
+                        <th>יום</th>
+                        <th>לקוח</th>
+                        <th>תיאור</th>
+                        <th>עבודה</th>
+                        <th>תעריף &#x20aa;</th>
+                        <th>סכום</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                   
+                    @foreach (var item in emData)
+                    {
+                        double sumRow = (double)item.HOUR_COST * (double)item.WORK_HOURS;
+                        sumTotal += (double)item.HOUR_COST * (double)item.WORK_HOURS;
+                        sumGrandTotal += (double)item.HOUR_COST * (double)item.WORK_HOURS;
+                        hoursTotal += (double)item.WORK_HOURS;
+                        hoursGrandTotal += (double)item.WORK_HOURS;
+
+
+                        int dayOfWeek = (int)item.WORK_DATE.DayOfWeek;
+
+                        string dayS;
+                        switch (dayOfWeek)
+                        {
+                            case 0: { dayS = "א"; break; }
+                            case 1: { dayS = "ב"; break; }
+                            case 2: { dayS = "ג"; break; }
+                            case 3: { dayS = "ד"; break; }
+                            case 4: { dayS = "ה"; break; }
+                            case 5: { dayS = "ו"; break; }
+                            case 6: { dayS = "ש"; break; }
+                            default: { dayS = "Machiah come! End of time."; break; }
+
+                        }
+
+
+
+                        <tr class="asher-table-body">
+
+                            <td>@item.WORK_DATE.ToString("dd.MM.yyyy")</td>
+                            <td>@dayS</td>
+
+                            <td>@item.CLIENT_NAME</td>
+                            <td>@item.WORK_DESCRIPTION</td>
+                            <td>@item.WORK_HOURS</td>
+                            <td>@item.HOUR_COST &nbsp; &#x20aa;</td>
+                            <td>@sumRow.ToString("N2") &nbsp; &#x20aa;</td>
+
+                        </tr>
+
+                    }
+                    <tr>
+                        <td></td>
+                       
+                        <td></td>
+                        <td></td>
+                        
+                        <td>סיכום</td>
+                        <td>@hoursTotal.ToString("N2")</td>
+                        <td></td>
+                        <td>@sumTotal.ToString("N2") &nbsp; &#x20aa;</td>
+                    </tr>
+                </tbody>
+                </table>
+
+
+        }
+
+        <div >
+            <div class="row asher-footer">
+                
+                <div class="col-md-2">@sumGrandTotal.ToString("N2") &nbsp; &#x20aa;</div>
+                <div class="col-md-2">@hoursGrandTotal.ToString("N2")</div>
+                <div class="col-md-2">סה"כ</div>
+                <div class="col-md-1"></div>
+                <div class="col-md-1"></div>
+                <div class="col-md-1"></div>
+                <div class="col-md-2"></div>
+            </div>
+            
+        </div>
+
+
+    <div><hr/></div>
+    <div>
+   
+    <a href="@Url.Action("ExportToExcel","Home")" class="asher-save-btn">יצוא ל<span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>Excel</a>
+    </div>    
+   
+    }
+    else
+    {
+        <div class="jumbotron">  
+            <div class="alert alert-warning text-center" role="alert">
+              
+                <h1><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>  פרויקט projectID לא תקף.<br/>לא נמצאו נתונים.</h1>
+            </div>
+            <div class="text-center">  
+                 <p><span>projectID</span> הפרמטר מועבר למחרוזת url כמו: <div dir="ltr">https://mysite.com?projectID=123</div>
+            </div>
+                
+         </div>
+    }
+}
+</div>
+

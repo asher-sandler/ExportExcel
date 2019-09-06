@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="byonitco_RFID_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="TBL_WORK_HOURS_REPORT">
+    <Key>
+      <PropertyRef Name="PROJECT_ID" />
+      <PropertyRef Name="EMPLOYEE_NAME" />
+      <PropertyRef Name="WORK_DATE" />
+    </Key>
+    <Property Name="PROJECT_ID" Type="Int32" Nullable="false" />
+    <Property Name="EMPLOYEE_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="WORK_DATE" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="CLIENT_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="WORK_DESCRIPTION" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="WORK_HOURS" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="HOUR_COST" Type="Decimal" Precision="18" Scale="2" />
+  </EntityType>
+  <EntityContainer Name="byonitco_RFID_DBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="TBL_WORK_HOURS_REPORT" EntityType="Self.TBL_WORK_HOURS_REPORT" />
+  </EntityContainer>
+</Schema>

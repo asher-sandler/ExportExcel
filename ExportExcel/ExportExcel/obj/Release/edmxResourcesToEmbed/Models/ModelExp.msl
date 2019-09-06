@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="byonitco_RFID_DBModelStoreContainer" CdmEntityContainer="byonitco_RFID_DBEntities">
+    <EntitySetMapping Name="TBL_WORK_HOURS_REPORT">
+      <EntityTypeMapping TypeName="byonitco_RFID_DBModel.TBL_WORK_HOURS_REPORT">
+        <MappingFragment StoreEntitySet="TBL_WORK_HOURS_REPORT">
+          <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
+          <ScalarProperty Name="EMPLOYEE_NAME" ColumnName="EMPLOYEE_NAME" />
+          <ScalarProperty Name="WORK_DATE" ColumnName="WORK_DATE" />
+          <ScalarProperty Name="CLIENT_NAME" ColumnName="CLIENT_NAME" />
+          <ScalarProperty Name="WORK_DESCRIPTION" ColumnName="WORK_DESCRIPTION" />
+          <ScalarProperty Name="WORK_HOURS" ColumnName="WORK_HOURS" />
+          <ScalarProperty Name="HOUR_COST" ColumnName="HOUR_COST" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
